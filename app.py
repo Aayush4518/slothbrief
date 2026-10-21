@@ -18,11 +18,30 @@ st.write(
     "concise summaries using your local AI model."
 )
 
-text = st.text_area(
-    "Paste your text",
+
+uploaded_file = st.file_uploader(
+    "Upload a text file (optional)",
+    type=["txt", "md"],
+    help="Upload a .txt or .md file, or paste your text below.",
+)
+
+pasted_text = st.text_area(
+    "Or paste your text",
     height=260,
     placeholder="Paste your meeting notes or chat log here...",
 )
+
+if uploaded_file is not None:
+    try:
+        file_text = uploaded_file.getvalue().decode("utf-8")
+    except UnicodeDecodeError:
+        st.error("This file isn't valid UTF-8 text. Please save it as UTF-8 and try again.")
+        file_text = ""
+else:
+    file_text = ""
+
+text = file_text if uploaded_file is not None else pasted_text
+
 
 if "summary" not in st.session_state:
     st.session_state.summary = ""
