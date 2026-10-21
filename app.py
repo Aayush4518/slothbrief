@@ -11,6 +11,9 @@ st.set_page_config(
     layout="centered",
 )
 
+if "summary" not in st.session_state:
+    st.session_state.summary = ""
+
 st.title("🦥 SlothBrief")
 st.caption("Slow down. Understand more. Your text stays local.")
 
@@ -53,20 +56,22 @@ summary_length = st.selectbox(
 
 
 
-if "summary" not in st.session_state:
-    st.session_state.summary = summarize_text(text, length=summary_length)
 
 if st.button("Generate Summary", type="primary", use_container_width=True):
-    if not text.strip():
-        st.warning("Please paste some text first.")
+    if not text or not text.strip():
+        st.warning("Please paste some text or upload a text file first.")
     else:
         try:
             with st.spinner("SlothBrief is thinking locally..."):
-                st.session_state.summary = summarize_text(text)
+                st.session_state.summary = summarize_text(
+                    text,
+                    length=summary_length,
+                )
         except OllamaError as error:
             st.error(str(error))
         except ValueError as error:
             st.warning(str(error))
+
 
 if st.session_state.summary:
     st.divider()

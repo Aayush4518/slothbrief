@@ -92,3 +92,22 @@ def test_summarize_supports_length_options(length):
 def test_summarize_rejects_invalid_length():
     with pytest.raises(ValueError, match="Invalid summary length"):
         summarize_text("Some meeting notes", length="invalid")
+
+
+
+
+def test_prompt_separates_tasks_from_discussion():
+    with patch(
+        "src.slothbrief.summarizer.generate_response",
+        return_value="Summary",
+    ) as mock_generate:
+        summarize_text(
+            "We discussed documentation. Priya will finish the report Friday."
+        )
+
+    prompt = mock_generate.call_args.args[0]
+
+    assert "Separate actual tasks from general discussion." in prompt
+    assert "Do not invent facts, owners, deadlines, or decisions." in prompt
+    assert "only when explicitly stated" in prompt
+    assert "If there are no explicit action items, say so." in prompt
