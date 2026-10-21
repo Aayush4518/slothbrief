@@ -1,0 +1,13 @@
+Team Meeting - Product Launch
+
+We met on Monday to go over the upcoming product launch.
+
+- Priya will finish the landing page by Friday.
+- Rahul needs to finish testing before launch.
+- If any critical bugs are still open, we'll postpone the launch.
+- We also talked about improving the onboarding docs, but nobody was assigned to it.
+
+Next steps:
+- Finish the landing page.
+- Complete testing.
+- Check for critical bugs before launch.
