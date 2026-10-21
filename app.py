@@ -3,6 +3,7 @@ import streamlit as st
 
 from src.slothbrief.ollama_client import OllamaError
 from src.slothbrief.summarizer import summarize_text
+from src.slothbrief.file_reader import read_uploaded_file
 
 st.set_page_config(
     page_title="SlothBrief",
@@ -33,9 +34,9 @@ pasted_text = st.text_area(
 
 if uploaded_file is not None:
     try:
-        file_text = uploaded_file.getvalue().decode("utf-8")
-    except UnicodeDecodeError:
-        st.error("This file isn't valid UTF-8 text. Please save it as UTF-8 and try again.")
+        file_text = read_uploaded_file(uploaded_file)
+    except ValueError as error:
+        st.error(str(error))
         file_text = ""
 else:
     file_text = ""
