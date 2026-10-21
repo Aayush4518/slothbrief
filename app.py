@@ -44,8 +44,17 @@ else:
 text = file_text if uploaded_file is not None else pasted_text
 
 
+summary_length = st.selectbox(
+    "Summary length",
+    options=["short", "balanced", "detailed"],
+    index=1,
+    format_func=lambda value: value.capitalize(),
+)
+
+
+
 if "summary" not in st.session_state:
-    st.session_state.summary = ""
+    st.session_state.summary = summarize_text(text, length=summary_length)
 
 if st.button("Generate Summary", type="primary", use_container_width=True):
     if not text.strip():

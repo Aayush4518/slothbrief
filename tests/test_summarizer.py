@@ -67,3 +67,28 @@ def test_read_uploaded_file_rejects_invalid_utf8():
 
     with pytest.raises(ValueError, match="valid UTF-8"):
         read_uploaded_file(uploaded_file)
+
+
+
+@pytest.mark.parametrize("length", ["short", "balanced", "detailed"])
+def test_summarize_supports_length_options(length):
+    with patch(
+        "src.slothbrief.summarizer.generate_response",
+        return_value="Test summary",
+    ) as mock_generate:
+        result = summarize_text("Some meeting notes", length=length)
+
+    assert result == "Test summary"
+    prompt = mock_generate.call_args.args[0]
+
+    if length == "short":
+        assert "2-3 sentences" in prompt
+    elif length == "balanced":
+        assert "concise summary" in prompt
+    else:
+        assert "thorough summary" in prompt
+
+
+def test_summarize_rejects_invalid_length():
+    with pytest.raises(ValueError, match="Invalid summary length"):
+        summarize_text("Some meeting notes", length="invalid")
