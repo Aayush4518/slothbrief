@@ -100,3 +100,5 @@ slothbrief/
 ├── samples/
 └── docs/
 ```
+## This project was mainly built for Hacktober fest Dev Challenges submissions
+So check the post out https://dev.to/aayush_singh/slothbrief-a-local-ai-summarizer-for-the-rest-of-us-4kbn
